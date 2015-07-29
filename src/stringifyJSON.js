@@ -11,6 +11,12 @@ var stringy = function(obj) {
       str += stringy(item) + ',';
     });
     str = str.slice(0,-1) + ']';
+  } else if (typeof obj === 'object') {
+    str += '{';
+    for (var key in obj) {
+      str += stringy(key) + ':' + stringy(obj[key]) + ',';
+    }
+    str = str.slice(0,-1) + '}';
   } else if (typeof obj === 'string') {
     str += '"' + String(obj) + '"';
   } else {
@@ -22,3 +28,14 @@ var stringy = function(obj) {
 var stringifyJSON = function(obj) {
   return '' + stringy(obj);
 };
+
+var ob = [1, true, 'true'];
+// var ob = {
+//   a: 6,
+//   bleh: true,
+//   wat: "true"
+// }
+var x = stringifyJSON(ob);
+console.log(x);
+console.log(JSON.stringify(ob));
+console.log(typeof x);
