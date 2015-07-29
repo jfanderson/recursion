@@ -37,5 +37,5 @@ var stringy = function(obj) {
 }
 
 var stringifyJSON = function(obj) {
-  return '' + stringy(obj);
+  return stringy(obj);
 };
