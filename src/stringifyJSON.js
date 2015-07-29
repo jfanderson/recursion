@@ -4,38 +4,27 @@
 // but you don't so you're going to write it from scratch:
 
 var stringy = function(obj) {
-  var str = '';
   if (Array.isArray(obj)) {
-    str += '[';
+    var str += '[';
     obj.forEach(function(item) {
       str += stringy(item) + ',';
     });
     str = str.slice(0,-1) + ']';
+    return str;
   } else if (typeof obj === 'object') {
-    str += '{';
+    var str += '{';
     for (var key in obj) {
       str += stringy(key) + ':' + stringy(obj[key]) + ',';
     }
     str = str.slice(0,-1) + '}';
+    return str;
   } else if (typeof obj === 'string') {
-    str += '"' + String(obj) + '"';
+    return '"' + String(obj) + '"';
   } else {
-    str += String(obj);
+    return String(obj);
   }
-  return str;
 }
 
 var stringifyJSON = function(obj) {
   return '' + stringy(obj);
 };
-
-var ob = [1, true, 'true'];
-// var ob = {
-//   a: 6,
-//   bleh: true,
-//   wat: "true"
-// }
-var x = stringifyJSON(ob);
-console.log(x);
-console.log(JSON.stringify(ob));
-console.log(typeof x);
