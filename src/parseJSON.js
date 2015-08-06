@@ -3,5 +3,58 @@
 
 // but you're not, so you'll write it from scratch:
 var parseJSON = function(json) {
-  // your code goes here
+  var ind = 0;
+  var tokens = [];
+
+  // creates string when opening quotes (") are encountered by tokenizer
+  // (accounts for escape characters)
+  var buildStr = function() {
+
+  }
+
+  // looks for bool, null, and numbers to return to tokenizer 
+  var buildPrimitive = function() {
+  }
+
+  // tokenize strings, primitives, and syntactical punctuation
+  var tokenize = function() {
+    while (ind < json.length-1) {
+      if (json[ind] === ' ') {
+        ind++;
+      } else if (json[ind] === '{') {
+        ind++;
+        tokens.push({type: 'objOpen'});
+      } else if (json[ind] === '}') {
+        ind++;
+        tokens.push({type: 'objClose'});
+      } else if (json[ind] === '[') {
+        ind++;
+        tokens.push({type: 'arrOpen'});
+      } else if (json[ind] === ']') {
+        ind++;
+        tokens.push({type: 'arrClose'});
+      } else if (json[ind] === ',') {
+        ind++;
+        tokens.push({type: 'comma'});
+      } else if (json[ind] === ':') {
+        ind++;
+        tokens.push({type: 'colon'});
+      } else if (json[ind] === '"') {
+        ind++;
+        tokens.push({type: 'str',
+                     value: buildStr()});
+      } else {
+        tokens.push({type: 'prim',
+                     value: buildPrimitive()});
+      }
+    }
+  }
+
+  var buildObj = function() {
+  }
+
+  var buildArr = function() {
+
+  }
+
 };
