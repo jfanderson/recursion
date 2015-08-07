@@ -79,11 +79,11 @@ var parseJSON = function(json) {
 
   var buildObj = function() {
     // var obj = {};
-    // while (json[ind] !== '}') {
+    // while (json[ind][type] !== 'objClose') {
     //   if (json[ind] === undefined) {
     //     throw new SyntaxError('Expected "}"');
     //   }
-    //   obj[check()] = check();
+    //   obj[startParse()] = 
     // }
   }
 
@@ -92,16 +92,18 @@ var parseJSON = function(json) {
   }
 
   var startParse = function() {
-    while (ind < tokens.length) {
-      if (tokens[i][type] === 'objOpen') {
-        return buildObj();
-      } else if (tokens[i][type] === 'arrOpen') {
-        return buildArr();
-      } else if (tokens[i][type] === 'str' || tokens[i][type] === 'prim') {
-        return tokens[i][value];
-      } else {
-        throw new SyntaxError('Invalid syntax');
-      }
+    if (tokens[ind][type] === 'objOpen') {
+      ind++;
+      return buildObj();
+    } else if (tokens[ind][type] === 'arrOpen') {
+      ind++;
+      return buildArr();
+    } else if (tokens[ind][type] === 'str' || tokens[ind][type] === 'prim') {
+      var result = tokens[ind][value];
+      ind++;
+      return result;
+    } else {
+      throw new SyntaxError('Invalid syntax');
     }
   }
 
