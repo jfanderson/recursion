@@ -9,7 +9,15 @@ var parseJSON = function(json) {
   // creates string when opening quotes (") are encountered by tokenizer
   // (accounts for escape characters)
   var buildStr = function() {
-
+    var str = "";
+    while (json[ind] !== '"') {
+      if (json[ind] === undefined) {
+        throw new SyntaxError("Expected");
+      }
+      str += json[ind];
+      ind++;
+    }
+    return str;
   }
 
   // looks for bools, nulls, and numbers to return to tokenizer 
