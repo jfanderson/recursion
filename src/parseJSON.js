@@ -79,34 +79,48 @@ var parseJSON = function(json) {
 
   var buildObj = function() {
     var obj = {};
-    while (json[ind][type] !== 'objClose') {
+    while (json[ind].type !== 'objClose') {
       if (json[ind] === undefined) {
         throw new SyntaxError('Expected "}"');
       }
       var k = nextStep();
-      if (json[ind][value] !== 'comma') {
-        throw new SyntaxError('Expected ","');
+      if (json[ind].type !== 'colon') {
+        throw new SyntaxError('Expected ":"');
       }
       ind++;
       var v = nextStep();
+      if (json[ind].type !== 'comma') {
+        throw new SyntaxError('Expected ","');
+      }
+      ind++;
       obj[k] = v;
     }
     return obj;
   }
 
   var buildArr = function() {
-
+    var arr = [];
+    while (json[ind].type !== 'arrClose') {
+      if (json[ind] === undefined) {
+        throw new SyntaxError('Expected "]"');
+      }
+      arr.push(nextStep());
+      if (json[ind].type !== 'comma') {
+        throw new SyntaxError('Expected ","');
+      }
+      ind++;
+    }
   }
 
   var nextStep = function() {
-    if (tokens[ind][type] === 'objOpen') {
+    if (tokens[ind].type === 'objOpen') {
       ind++;
       return buildObj();
-    } else if (tokens[ind][type] === 'arrOpen') {
+    } else if (tokens[ind].type === 'arrOpen') {
       ind++;
       return buildArr();
-    } else if (tokens[ind][type] === 'str' || tokens[ind][type] === 'prim') {
-      var result = tokens[ind][value];
+    } else if (tokens[ind].type === 'str' || tokens[ind].type === 'prim') {
+      var result = tokens[ind].value;
       ind++;
       return result;
     } else {
