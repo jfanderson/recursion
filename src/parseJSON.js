@@ -78,13 +78,20 @@ var parseJSON = function(json) {
   }
 
   var buildObj = function() {
-    // var obj = {};
-    // while (json[ind][type] !== 'objClose') {
-    //   if (json[ind] === undefined) {
-    //     throw new SyntaxError('Expected "}"');
-    //   }
-    //   obj[nextStep()] = nextStep();
-    // }
+    var obj = {};
+    while (json[ind][type] !== 'objClose') {
+      if (json[ind] === undefined) {
+        throw new SyntaxError('Expected "}"');
+      }
+      var k = nextStep();
+      if (json[ind][value] !== 'comma') {
+        throw new SyntaxError('Expected ","');
+      }
+      ind++;
+      var v = nextStep();
+      obj[k] = v;
+    }
+    return obj;
   }
 
   var buildArr = function() {
