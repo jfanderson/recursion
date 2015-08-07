@@ -12,8 +12,27 @@ var parseJSON = function(json) {
 
   }
 
-  // looks for bool, null, and numbers to return to tokenizer 
+  // looks for bools, nulls, and numbers to return to tokenizer 
   var buildPrimitive = function() {
+    if (json.substr(ind, 4) === 'true') {
+      ind += 4;
+      return true;
+    } else if (json.substr(ind, 5) === 'false') {
+      ind += 5;
+      return false;
+    } else if (json.substr(ind, 4) === 'null') {
+      ind += 4;
+      return null;
+    } else if (/[\d+-.eE]/.test(json[ind])) {
+      var numStart = ind;
+      ind++;
+      while (/[\d+-.eE]/.test(json[ind])) {
+        ind++;
+      }
+      return Number(json.substr(numStart, ind));
+    } else {
+      throw new SyntaxError('Invalid syntax');
+    }
   }
 
   // tokenize strings, primitives, and syntactical punctuation
@@ -51,10 +70,16 @@ var parseJSON = function(json) {
   }
 
   var buildObj = function() {
+    // var obj = {};
+    // while (json[ind] !== '}') {
+    //   if (json[ind] === undefined) {
+    //     throw new SyntaxError('Expected "}"');
+    //   }
+    //   obj[check()] = check();
+    // }
   }
 
   var buildArr = function() {
 
   }
-
 };
