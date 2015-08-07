@@ -83,7 +83,7 @@ var parseJSON = function(json) {
     //   if (json[ind] === undefined) {
     //     throw new SyntaxError('Expected "}"');
     //   }
-    //   obj[startParse()] = 
+    //   obj[nextStep()] = nextStep();
     // }
   }
 
@@ -91,7 +91,7 @@ var parseJSON = function(json) {
 
   }
 
-  var startParse = function() {
+  var nextStep = function() {
     if (tokens[ind][type] === 'objOpen') {
       ind++;
       return buildObj();
@@ -109,5 +109,5 @@ var parseJSON = function(json) {
 
   tokenize();
   ind = 0; // reset index for iterating through tokens
-  startParse();
+  nextStep();
 };
