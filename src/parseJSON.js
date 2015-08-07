@@ -45,7 +45,7 @@ var parseJSON = function(json) {
 
   // tokenize strings, primitives, and syntactical punctuation
   var tokenize = function() {
-    while (ind < json.length-1) {
+    while (ind < json.length) {
       if (json[ind] === ' ') {
         ind++;
       } else if (json[ind] === '{') {
@@ -90,4 +90,22 @@ var parseJSON = function(json) {
   var buildArr = function() {
 
   }
+
+  var startParse = function() {
+    while (ind < tokens.length) {
+      if (tokens[i][type] === 'objOpen') {
+        return buildObj();
+      } else if (tokens[i][type] === 'arrOpen') {
+        return buildArr();
+      } else if (tokens[i][type] === 'str' || tokens[i][type] === 'prim') {
+        return tokens[i][value];
+      } else {
+        throw new SyntaxError('Invalid syntax');
+      }
+    }
+  }
+
+  tokenize();
+  ind = 0; // reset index for iterating through tokens
+  startParse();
 };
