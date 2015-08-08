@@ -79,17 +79,17 @@ var parseJSON = function(json) {
 
   var buildObj = function() {
     var obj = {};
-    while (json[ind].type !== 'objClose') {
-      if (json[ind] === undefined) {
+    while (tokens[ind].type !== 'objClose') {
+      if (tokens[ind] === undefined) {
         throw new SyntaxError('Expected "}"');
       }
       var k = nextStep();
-      if (json[ind].type !== 'colon') {
+      if (tokens[ind].type !== 'colon') {
         throw new SyntaxError('Expected ":"');
       }
       ind++;
       var v = nextStep();
-      if (json[ind].type !== 'comma') {
+      if (tokens[ind].type !== 'comma') {
         throw new SyntaxError('Expected ","');
       }
       ind++;
@@ -100,12 +100,12 @@ var parseJSON = function(json) {
 
   var buildArr = function() {
     var arr = [];
-    while (json[ind].type !== 'arrClose') {
-      if (json[ind] === undefined) {
+    while (tokens[ind].type !== 'arrClose') {
+      if (tokens[ind] === undefined) {
         throw new SyntaxError('Expected "]"');
       }
       arr.push(nextStep());
-      if (json[ind].type !== 'comma') {
+      if (tokens[ind].type !== 'comma') {
         throw new SyntaxError('Expected ","');
       }
       ind++;
