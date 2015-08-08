@@ -12,11 +12,12 @@ var parseJSON = function(json) {
     var str = "";
     while (json[ind] !== '"') {
       if (json[ind] === undefined) {
-        throw new SyntaxError("Expected");
+        throw new SyntaxError("Expected Double Quote");
       }
       str += json[ind];
       ind++;
     }
+    ind++;
     return str;
   }
 
@@ -95,6 +96,7 @@ var parseJSON = function(json) {
       ind++;
       obj[k] = v;
     }
+    ind++;
     return obj;
   }
 
@@ -110,6 +112,8 @@ var parseJSON = function(json) {
       }
       ind++;
     }
+    ind++;
+    return arr;
   }
 
   var nextStep = function() {
@@ -130,5 +134,7 @@ var parseJSON = function(json) {
 
   tokenize();
   ind = 0; // reset index for iterating through tokens
-  nextStep();
+  return nextStep();
 };
+
+console.log(parseJSON("[]"));
