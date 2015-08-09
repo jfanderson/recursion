@@ -13,9 +13,13 @@ var parseJSON = function(json) {
     while (json[ind] !== '"') {
       if (json[ind] === undefined) {
         throw new SyntaxError("Expected Double Quote");
+      } else if (json[ind] === '\\') {
+        str += json[ind+1];
+        ind += 2;
+      } else {
+        str += json[ind];
+        ind++;
       }
-      str += json[ind];
-      ind++;
     }
     ind++;
     return str;
@@ -32,13 +36,13 @@ var parseJSON = function(json) {
     } else if (json.substr(ind, 4) === 'null') {
       ind += 4;
       return null;
-    } else if (/[\d+-.eE]/.test(json[ind])) {
+    } else if (/[0-9.eE+-]/.test(json[ind])) {
       var numStart = ind;
       ind++;
-      while (/[\d+-.eE]/.test(json[ind])) {
+      while (/[0-9.eE+-]/.test(json[ind])) {
         ind++;
       }
-      return Number(json.substr(numStart, ind));
+      return Number(json.slice(numStart, ind));
     } else {
       throw new SyntaxError('Invalid syntax');
     }
@@ -90,10 +94,11 @@ var parseJSON = function(json) {
       }
       ind++;
       var v = nextStep();
-      if (tokens[ind].type !== 'comma') {
+      if (tokens[ind].type === 'comma') {
+        ind++;
+      } else if (tokens[ind].type !== 'objClose') {
         throw new SyntaxError('Expected ","');
       }
-      ind++;
       obj[k] = v;
     }
     ind++;
@@ -107,10 +112,11 @@ var parseJSON = function(json) {
         throw new SyntaxError('Expected "]"');
       }
       arr.push(nextStep());
-      if (tokens[ind].type !== 'comma') {
-        throw new SyntaxError('Expected ","');
+      if (tokens[ind].type === 'comma') {
+        ind++;
+      } else if (tokens[ind].type !== 'arrClose') {
+        throw new SyntaxError('Expected ","');        
       }
-      ind++;
     }
     ind++;
     return arr;
@@ -136,5 +142,3 @@ var parseJSON = function(json) {
   ind = 0; // reset index for iterating through tokens
   return nextStep();
 };
-
-console.log(parseJSON("[]"));
